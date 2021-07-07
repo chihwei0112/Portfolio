@@ -1,0 +1,93 @@
+$color_blue_light: #1A449D;
+$color_blue_dark: #1D2C4C;
+$scene_blue_gradient: linear-gradient(210deg, $color_blue_light, $color_blue_dark);
+
+@mixin size($w, $h, $bdrs: 0, $bgc: rgba(0, 0, 0, 0)) {
+    width: $w;
+    height: $h;
+    border-radius: $bdrs;
+    background: $bgc;
+}
+
+@mixin flex($j, $a) {
+    display: flex;
+    justify-content: $j;
+    align-items: $a;
+}
+
+@mixin poa($t: 0, $l: 0, $tX: 0, $tY: 0) {
+    position: absolute;
+    top: $t;
+    left: $l;
+    transform: translate($tX, $tY);
+}
+
+@mixin font($c, $fz, $fw: inherit, $lh: inherit, $ls: inherit) {
+    color: $c;
+    font-size: $fz;
+    font-weight: $fw;
+    line-height: $lh;
+    letter-spacing: $ls;
+}
+
+body,
+html {
+    @include size(100%, 100vh, 0);
+    @include flex(center, center);
+    background-color: #222;
+}
+
+.scene {
+    @include size(800px, 500px, 15px, $scene_blue_gradient);
+	position: relative;
+    box-shadow: 0 5px 5px rgba($color: #000, $alpha: 0.5);
+	overflow: hidden;
+
+    .moon {
+        @include poa(20%, 10%);
+        @include size(50px, 50px, 50%, rgba(0, 0, 0, 0));
+		transform: rotate(90deg);
+        box-shadow: inset 0px 16px #ffcc33, inset 0px 16px 1px 1px #ffcc33;
+    }
+
+    .name {
+        @include poa(50%, 50%, -50%, -50%);
+        @include font(white, 4rem, 900);
+    }
+
+
+	.allstars {
+		@include size(100%, 100%);
+		@include poa(50%, 50%, -50%, -50%);
+
+		@keyframes flying {
+			0%, 100% {
+				opacity: 0;
+			}
+
+			60% {
+				opacity: 1;
+			}
+
+			0% {
+				transform: translate(100px, 0);
+			}
+
+			100% {
+				transform: translate(0, 350px);
+			}
+		}
+
+		@for $i from 1 to 30 {
+			.star#{$i} {
+				@include size(5px, 5px, 50%, rgb(random(255), random(255), random(255)));
+				@include poa(random() * 30%, random() * 800px);
+
+				animation-name: flying;
+				animation-delay: random() * -1s;
+				animation-duration: (random() * 3s) + 2s;
+				animation-iteration-count: infinite;
+			}
+		}
+	}
+}

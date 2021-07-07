@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            box-sizing: border-box;
+
+        }
+        /* body{
+            margin: 0;
+            padding: 0;
+        } */
+        .container{
+            width: 50%;
+            height: 100vh;
+            margin: auto;
+            
+        
+        }
+        .content{
+            width: 100%;
+            height: 60%;
+            border: cyan solid 1px;
+        
+        }
+        input{
+            width: 80px;
+            height: 20px;
+        }
+        .result{
+            width: 250px;
+            height: 20px;
+            border: black solid 1px;
+        }
+        .bmi{
+            width: 456px;
+            height: 176px;
+            border: cyan solid 1px;
+        }
+        h1,p,input,.result,.bmi{
+            margin: auto;
+            padding: 10px 0px;
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <h1>BMI計算機</h1>
+            <p>身體質量指數 (Body Mass Index ，簡稱BMI)是公認用來估計肥胖程度的方法</p>
+            <p>BMI = 體重(公斤) / 身高的平方(公尺)</p>
+            我的身高:<input id="value-1" type="text">公分
+            我的體重:<input id="value-2" type="text">公斤
+            <button id="calc">計算</button>
+            <button id="reset">重新填寫</button>
+            <div class="result"></div>
+            <div class="bmi"></div>
+        </div>
+    </div>
+
+    <script>
+        var calcBtn = document.querySelector('#calc');
+        calcBtn.addEventListener('click',function () {
+            var height = document.querySelector('#value-1').value;
+            
+            var weight = document.querySelector('#value-2').value;
+
+            console.log(parseInt(weight)+(parseInt(height)));
+
+            // (weight / ((height * height) / 10000)).toFixed(2);
+            
+            var result = parseInt(weight)/(((parseInt(height)/100)*(parseInt(height)/100))).toFixed(2);
+            
+            document.querySelector('.result').innerHTML=result;
+        
+        })
+        var resetBtn = document.querySelector('#reset');
+        resetBtn.addEventListener('click',function () {
+            
+            var result = ""
+            
+            document.querySelector('.result').innerHTML=result;
+            
+        })
+    </script>
+</body>
+</html>

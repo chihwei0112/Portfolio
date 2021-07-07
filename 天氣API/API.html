@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        box-sizing: border-box;
+    }
+    body{
+        background-color: lightgoldenrodyellow;
+    }
+
+    .card {
+        background-color: gray;
+        box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.4);
+        transition: 0.3s;
+        width: 100%;
+        border-radius: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 5%;
+        padding-top: 8%;
+    }
+
+    .card img{
+        width: 40%;
+    }
+
+
+
+    .card:hover {
+        box-shadow: 0 10px 18px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .container {
+        padding: 2px 16px;
+    }
+
+    .containerBig {
+        padding: 5%;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 2%;
+    }
+</style>
+<body>
+    <div class="containerBig">
+
+    </div>
+    <script>
+
+        
+
+        // 發送請求
+        fetch('https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-5C1CD113-A5B7-4C82-A72D-0D7D37314F22&format=JSON')
+
+            // 將回應的資料取出
+            .then(function (response) {
+                return response.json()
+            })
+
+            // 使用得到的資料
+            .then(function (result) {
+
+                // 讀到資料
+                console.log(result["records"]["location"][0]["weatherElement"][4]["time"][0]["parameter"]["parameterName"]);
+                console.log(typeof (result["records"]["location"][0]["weatherElement"][4]["time"][0]["parameter"]["parameterName"]));
+
+                console.log(result);
+
+                // 把資料長到畫面上
+                // var section = document.querySelector('section');
+                // // section.innerHTML = result["records"]["location"][0]["weatherElement"][4]["time"][0]["parameter"]["parameterName"]; 
+                // section.innerHTML = "溫度" + result["records"]["location"][0]["weatherElement"][4]["time"][0]["parameter"]["parameterName"];
+
+                var container = document.querySelector('.containerBig');
+                var data = result["records"]["location"];
+
+                data.forEach(function (item, index) {
+
+                    var city = data[index]["locationName"];
+                    var time = data[index]["weatherElement"][0]["time"][1]["startTime"];
+                    var temp = data[index]["weatherElement"][4]["time"][1]["parameter"]["parameterName"];
+                    var rain = data[index]["weatherElement"][1]["time"][1]["parameter"]["parameterName"];
+                    var status = data[index]["weatherElement"][0]["time"][1]["parameter"]["parameterName"];
+                    var statusNumber = data[index]["weatherElement"][0]["time"][1]["parameter"]["parameterValue"];
+
+                    if (statusNumber > 0 && statusNumber <= 3){
+                        var picture = './img/wind.png'
+                    }else if(statusNumber > 3 && statusNumber <=7){
+                        var picture = './img/cloud.png'
+                    }else if(statusNumber > 7){
+                        var picture = './img/rain.png' 
+                    }
+
+                    container.innerHTML +=
+                    `
+                    <div class="card">
+                        <img src="${picture}" alt="Avatar">
+                        <div class="container">
+                            <h4>縣市 : ${city}</h4>
+                            <p>時間 : ${time}</p>
+                            <p>溫度 : ${temp} 度C</p>
+                            <p>降雨 : ${rain} %</p>
+                            <p>狀態 : ${status}</p>
+                        </div>
+                    </div>`
+                });
+
+
+
+
+
+            });
+
+
+            // 天氣 API
+            // 一卡片一縣市
+            // 顯示溫度、溼度、....
+
+
+
+    </script>
+</body>
+</html>
